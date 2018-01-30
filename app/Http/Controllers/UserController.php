@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Otp;
 use App\User;
+use Hash;
 
 class UserController extends Controller
 {
@@ -12,7 +13,7 @@ class UserController extends Controller
 	
 	public function checkAndAddNewUser(){
 		try{
-    		$mbl = "5";
+    		$mbl = "9970016888";
 			$name = "Sachin Jadhav";
 			$email = "jadhavsachin174@gmail.com";
 			$pswd = "sachie";
@@ -39,7 +40,7 @@ class UserController extends Controller
 	}
 	
 	public function sendOTP(Request $request){
-		
+		return "test";
 		try{
 			$mbl = '9970016888';
 			$digits = '1234';
@@ -54,11 +55,13 @@ class UserController extends Controller
 			$otp = new Otp;
 			$otp->mbl = $mbl;
 			$otp->digits = $digits;
-			$otp->expires_at = "2018-01-26 23:55:06";
+			$otp->expires_at = date("Y-m-d H:i:s", time() + 30);
+			//"2018-01-26 23:55:06";
 			
 			$saved = $otp->save();
 
-			return $saved ? 1 : 0;
+			
+			return $saved ? $digits : 0;
 			
 		}
 		catch(Exception $ex){
@@ -72,17 +75,17 @@ class UserController extends Controller
 			$mbl = '9970016888';
 			$digits = '1234';
 
-			$row = Otp::where('mbl', $mbl)->get();
+			$row = Otp::where('mbl', $mbl)->where('expires_at', '>', date("Y-m-d H:i:s"))->get();
 			$present = $row->count() == 1 ? true : false;	
-
+			
 			if($present){
-				if($row[0]->digits == $digits)
+				if($row[0]->digits === $digits)
 					return 1;
 				else
-					false;
+					0;
 			}
 			
-			return false;
+			return 0;
 		}
 		catch(Exception $ex){
 			return -1;
