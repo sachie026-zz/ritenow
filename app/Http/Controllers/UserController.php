@@ -40,7 +40,7 @@ class UserController extends Controller
 	}
 	
 	public function sendOTP(Request $request){
-		return "test";
+		//return "test";
 		try{
 			$mbl = '9970016888';
 			$digits = '1234';
