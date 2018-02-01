@@ -45,6 +45,10 @@ class UserController extends Controller
 			$mbl = '9970016888';
 			$digits = '1234';
 
+			$userPresent = User::where('mbl', $mbl)->count() == 1 ? true : false;
+			if($userPresent)
+				return 2;
+
 			$row = Otp::where('mbl', $mbl)->get();
 			$present = $row->count() == 1 ? true : false;	
 
@@ -74,7 +78,11 @@ class UserController extends Controller
 		try{
 			$mbl = '9970016888';
 			$digits = '1234';
-
+			
+			$userPresent = User::where('mbl', $mbl)->count() == 1 ? true : false;
+			if($userPresent)
+				return 2;
+			
 			$row = Otp::where('mbl', $mbl)->where('expires_at', '>', date("Y-m-d H:i:s"))->get();
 			$present = $row->count() == 1 ? true : false;	
 			
