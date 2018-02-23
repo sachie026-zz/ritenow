@@ -105,7 +105,10 @@ class NotificationController extends Controller
 		try{
 			$requestId = "2";
 			$row = Connectrequest::find($requestId);
-			$present = $row->count() == 1 ? true : false;	
+			if($row != null)	
+				$present = $row->count() == 1 ? true : false;	
+			else 
+				$present = false;
 
 //			return $row->fbid;
 			
