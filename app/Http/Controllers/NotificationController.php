@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Profile;
-use App\ConnectRequest;
+use App\Connectrequest;
 use App\Connection;
 use App\Notification;
 
@@ -25,7 +25,7 @@ class NotificationController extends Controller
 			
 		//	$name = "vivek";
 			//$picture = "assd.jpg";
-			$present = ConnectRequest::where('fbid', $fbid)->where('from', $from)->count() == 1 ? true : false;
+			$present = Connectrequest::where('fbid', $fbid)->where('from', $from)->count() == 1 ? true : false;
 			if(!$present){
 				$request = new ConnectRequest;
 		        $request->profile_name = $pName;
