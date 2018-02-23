@@ -5,27 +5,67 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Otp;
 use App\User;
+use App\Profile;
+use App\ConnectRequest;
+use App\Connection;
 use Hash;
 
 class UserController extends Controller
 {
     //
 	
+	public function createNewUserProfile($fbid, $name, $picture){
+		try{
+    		$present = Profile::where('fbid', $fbid)->count() == 1 ? true : false;
+    		if(!$present){
+		        $profile = new Profile;
+		        $profile->name = $name;
+		        $profile->fbid = $fbid;
+		        $profile->pic = $picture;		        
+		        $saved = $profile->save();
+//		        return $saved ? 1 : 0;    			
+    		}
+//    		return 2;
+    	}
+    	catch(Exception $ex){
+    		return -1;
+    	}		
+	}
+	
+
+	public function createNewConnectionEntry($fbid){
+		try{
+			$present = Connection::where('fbid', $fbid)->count() == 1 ? true : false;
+    		if(!$present){
+		        $connection = new Connection;
+		        $connection->fbid = $fbid;
+		        $saved = $connection->save();
+					}
+		}
+		catch(Exception $ex){
+		}
+	}
+
+	
 	public function checkAndAddNewUser(){
 		try{
-    		$mbl = "9970016888";
+    		$fbid = "9970016888";
 			$name = "Sachin Jadhav";
 			$email = "jadhavsachin174@gmail.com";
-			$pswd = "sachie";
+			$picture = "asdf.jpg";
+			$token = "asdfghjkl";
 			
-    		$present = User::where('mbl', $mbl)->count() == 1 ? true : false;
+    		$present = User::where('fbid', $fbid)->count() == 1 ? true : false;
     		if(!$present){
 		        $User = new User;
 		        $User->name = $name;
-		        $User->mbl = $mbl;
+		        $User->fbid = $fbid;
 		        $User->emailid = $email;		        
-		        $User->password = Hash::make($pswd);
 		        $saved = $User->save();
+				if($saved == 1){
+					$this->createNewUserProfile($fbid, $name, $picture);
+					$this->createNewConnectionEntry($fbid);
+				}	
 		        return $saved ? 1 : 0;    			
     		}
     		return 2;
@@ -35,12 +75,69 @@ class UserController extends Controller
     	}    
 	}
 	
-	public function loginUser(){
-		
+	public function signinUser(){
+		try{
+			$mbl = '9970016888';
+			$pswd = 'secret';
+			$token = 'token';
+			
+			$userPresent = User::where('mbl', $mbl)->get();
+			if($userPresent->count() <= 0)		// user not present
+				return 2;
+ 
+			$hashedPassword = Hash::make($userPresent[0]->password);
+	
+			if (Hash::check($pswd, $hashedPassword))
+			{
+				$user = User::find('id', $userPresent[0]->id);
+				$user->remember_token = $token;				
+				$saved = $user->save();
+				if($saved)
+					return 1;
+				else
+					return 0;	
+			}
+			else{
+				return 3;
+			}
+		}
+		catch(Exception $ex){
+			return -1;
+		}
 	}
 	
+	
+	
+	
+	public function signOutUser(){
+		try{
+			$mbl = '9970016888';
+			$token = 'token';
+			$userPresent = User::where('mbl', $mbl)->get();
+		
+			if($userPresent->count() > 0)
+			{
+				$user = User::find('id', $userPresent[0]->id);
+				$user->remember_token = NULL;				
+				$saved = $user->save();
+
+				if($saved)
+					return 1;
+				else
+					return 0;	
+
+			}
+			else{
+				return 2;
+			}
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
+	
+
 	public function sendOTP(Request $request){
-		//return "test";
 		try{
 			$mbl = '9970016888';
 			$digits = '1234';
@@ -60,20 +157,16 @@ class UserController extends Controller
 			$otp->mbl = $mbl;
 			$otp->digits = $digits;
 			$otp->expires_at = date("Y-m-d H:i:s", time() + 30);
-			//"2018-01-26 23:55:06";
 			
 			$saved = $otp->save();
-
-			
 			return $saved ? $digits : 0;
-			
 		}
 		catch(Exception $ex){
 			return -1;
 		}				
-
 	}
 
+	
 	public function verifyOTP(){
 		try{
 			$mbl = '9970016888';
@@ -92,7 +185,6 @@ class UserController extends Controller
 				else
 					0;
 			}
-			
 			return 0;
 		}
 		catch(Exception $ex){

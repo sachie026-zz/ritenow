@@ -15,9 +15,11 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('mbl');
+            $table->string('fbid');
+			$table->string('profile_name');
+            $table->string('profile_pic');
             $table->string('status');
-            $table->string('visibility');
+           // $table->string('visibility');
 			$table->timestamp('expires_at');
             $table->timestamps();
         });

@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model
+class Profile extends Model
 {
     //
-	protected $table = 'posts';
+    public $timestamps = false;
 }
