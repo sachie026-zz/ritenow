@@ -27,7 +27,7 @@ class NotificationController extends Controller
 			//$picture = "assd.jpg";
 			$present = Connectrequest::where('fbid', $fbid)->where('from', $from)->count() == 1 ? true : false;
 			if(!$present){
-				$request = new ConnectRequest;
+				$request = new Connectrequest;
 		        $request->profile_name = $pName;
 		        $request->fbid = $fbid;
 		        $request->from = $from;	
@@ -79,11 +79,11 @@ class NotificationController extends Controller
 	{
 		try{
 			$requestId = "1";
-			$row = ConnectRequest::where('id', $requestId)->get();
+			$row = Connectrequest::where('id', $requestId)->get();
 			$present = $row->count() == 1 ? true : false;	
 
 			if($present){
-				$otpRow = ConnectRequest::find($row[0]->id)	;
+				$otpRow = Connectrequest::find($row[0]->id)	;
 				$otpRow->delete();
 				
 				$userProfileData = Profile::where('fbid', $row[0]->fbid)->get();			
@@ -104,7 +104,7 @@ class NotificationController extends Controller
 	{
 		try{
 			$requestId = "2";
-			$row = ConnectRequest::find($requestId);
+			$row = Connectrequest::find($requestId);
 			$present = $row->count() == 1 ? true : false;	
 
 //			return $row->fbid;
