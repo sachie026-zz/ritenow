@@ -47,9 +47,16 @@ class UserController extends Controller
 	}
 
 	
-	public function checkAndAddNewUser(){
+	public function checkAndAddNewUser(Request $request){
 		try{
-    		$fbid = "9970016888";
+			//return isset($request->fbid);
+//			return $request;
+		//	return $request == null || $request === [] ? 't' : 'f';
+    		$isfbid = isset($request->fbid);
+			if(!$isfbid)
+				return 3;
+		//return $fbid ? 't' : 'f';
+			$fbid = $request->fbid;
 			$name = "Sachin Jadhav";
 			$email = "jadhavsachin174@gmail.com";
 			$picture = "asdf.jpg";
