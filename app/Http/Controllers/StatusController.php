@@ -108,7 +108,7 @@ class StatusController extends Controller
 			return $saved ? 1 : 0;    			
     	}
     	catch(Exception $ex){
-    		return -1;
+    		return $ex;
     	}
 	}
 
