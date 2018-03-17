@@ -49,19 +49,23 @@ class UserController extends Controller
 	
 	public function checkAndAddNewUser(Request $request){
 		try{
-			//return isset($request->fbid);
-//			return $request;
-		//	return $request == null || $request === [] ? 't' : 'f';
-    		$isfbid = isset($request->fbid);
-			if(!$isfbid)
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			if(!$fbid)
 				return 3;
-		//return $fbid ? 't' : 'f';
-			$fbid = $request->fbid;
+
+
+			$name = isset($request->name) ? $request->name : null;
+			$email = isset($request->email) ? $request->email : null;
+			$picture = isset($request->picture) ? $request->picture : null;
+			$token = isset($request->token) ? $request->token : null;
+
+/*			
+			$fbid = "123";
 			$name = "Sachin Jadhav";
 			$email = "jadhavsachin174@gmail.com";
 			$picture = "asdf.jpg";
 			$token = "asdfghjkl";
-			
+*/			
     		$present = User::where('fbid', $fbid)->count() == 1 ? true : false;
     		if(!$present){
 		        $User = new User;

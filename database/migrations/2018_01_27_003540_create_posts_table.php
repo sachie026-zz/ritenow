@@ -19,7 +19,10 @@ class CreatePostsTable extends Migration
 			$table->string('profile_name');
             $table->string('profile_pic');
             $table->string('status');
-           // $table->string('visibility');
+			$table->string('state');
+			$table->string('lattitude');
+			$table->string('longitude');
+            $table->string('address');
 			$table->timestamp('expires_at');
             $table->timestamps();
         });

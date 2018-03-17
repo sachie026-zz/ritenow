@@ -59,13 +59,32 @@ class StatusController extends Controller
 		}
 	}
 	
-	public function postAddStatus(){
+	
+	public function postAddStatus(Request $request){
 		try{
-    		$fbid = "9970016888";
-			$statusText = "Sachin Jadhav";
+			
+    		$fbid = isset($request->fbid) ? $request->fbid : null;
+			if(!$fbid)
+				return 3;
+
+			$token = isset($request->token) ? $request->token : null;
+			if($token)
+			{
+				$userData = User::where('fbid', $fbid)->get();
+				if($token != $userData[0]->remember_token)
+					return 4;	//authentication problem 'token dosent match'		
+			}
+			else
+				return 3;
+			
+			$latitude = isset($request->latitude) ? $request->latitude : null;
+			$longitude = isset($request->longitude) ? $request->longitude : null;
+			$address = isset($request->address) ? $request->address : null;
+			$state = isset($request->state) ? $request->state : null;
+			$statusText = isset($request->status) ? $request->status : null;
 			$expiry = date("Y-m-d H:i:s", time() + 30);
 			
-			$userProfileData = Profile::where('fbid', $fbid)->get();
+			$userProfileData = Profile::where('fbid', $fbid)->get();	
 			
 			$pName = $userProfileData[0]->name;
 			$pPic = $userProfileData[0]->pic;
@@ -73,6 +92,10 @@ class StatusController extends Controller
 			$status = new Status;
 			$status->fbid = $fbid;
 			$status->status = $statusText;
+			$status->state = $state;
+			$status->latitude = $latitude;
+			$status->longitude = $longitude;
+			$status->address = $address;
 			$status->expires_at = $expiry;
 			$status->profile_name = $pName;
 			$status->profile_pic = $pPic;
