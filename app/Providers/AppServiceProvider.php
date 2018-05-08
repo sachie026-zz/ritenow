@@ -24,5 +24,10 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+		$this->app->bind('App\Helpers\RiteNowGlobal', function(){
+
+            return new RiteNowGlobal();
+
+        });
     }
 }

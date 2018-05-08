@@ -1,0 +1,214 @@
+API / backend return values
+-----------------------------
+1. login flow > [ true / false] [ 1 / 0] > DONE
+
+*  get profile > [ name, pic, connCount , reqCount, follow/Unfollow, postText, fbid]  
+
+2. search > [ name, pic, follow/Unfollow, fbid]
+
+3. send request > [ true / false]
+
+4. get notifications > [ name, pic, notifyText , fbid]
+      
+5. get requests	->	 > [ name, pic, follow/UnfollowLink,  fbid]
+ 
+6. accept/reject status > [ true/false]
+
+7. get connections	 > [ name, pic, UnfollowLink,  fbid]
+
+8. post status [ true/false]
+
+9. get all status   [ name, pic, postText, fbid, postId]
+
+
+------------------------------
+
+
+
+
+1. login flow -> done
+
+*  get profile -> done
+
+2. search -> done
+
+3. send request -> done
+
+4. get notifications	-> done
+   
+*  get profile   
+   
+5. get requests	->	 done
+ 
+6. accept/reject status -> done
+
+7. get connections	-> done
+
+8. post status
+
+9. get all status
+
+10.
+
+
+****IMP
+
+10. while opening the app - take fb token - and verify it with database -> send the token with every operation for security
+
+
+-----------------------------------------
+API URI with request parameter
+------------------------------------------
+
+name, email, fbid, token, picture
+http://localhost:8000/loginUser?name=sach&email=js&fbid=122&token=sk&picture=one.jpg
+-----done
+
+
+uname, token
+http://localhost:8000/getSearchedUser?uname=sach&token=sj&fbid=123
+-----done
+
+
+token, fromid, toid
+http://localhost:8000/checkIfConnected?fromid=123&token=sk&toid=122
+----done
+
+
+
+token, fbid, userid
+http://localhost:8000/getProfile?fbid=123&token=sk&userid=122
+----done
+
+
+token, from, fbid
+http://localhost:8000/postSendConnectionRequest?fbid=123&token=sk&fromid=234
+------done
+
+
+token, fbid
+http://localhost:8000/getNotifications?fbid=123&token=sk
+-----done
+
+
+
+token, fbid
+http://localhost:8000/getConnections?fbid=123&token=sk
+---------done
+
+
+
+token, fbid
+http://localhost:8000/getRequests?fbid=123&token=sk
+--------done
+
+
+
+token, fbid, status, state, lati, longi, address, expiry, profilename, proiflepic
+http://localhost:8000/postAddStatus?token=sd&fbid=321&status=movie&state=available&latitude=1.234&longitude=73.234&address=pusad
+
+
+
+token, fbid
+http://localhost:8000/postRemoveStatus?fbid=123&token=sk
+
+
+
+token, requestId
+http://localhost:8000/postAcceptRequest?requestid=1&fbid=123&token=sk
+
+
+
+token, requestId
+http://localhost:8000/postRejectRequest?requestid=123&fbid=123&token=sk
+
+
+
+
+http://localhost:8000/
+
+
+
+---------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+.........................................
+
+
+
+
+Flow to develop API'search
+--------------------------
+1. Login [user data to DB]  -> create profile   -> connection table
+(  uname, upic, fbid, emailid )   ->   (uname, fbid, fbid, connection_count, request_count, curent_stat_text )  -> (fbid, connections)
+
+
+
+2. search users [from DB]  [provide uname text]   -> send connect request
+- output (uname, upic)  ->  (uname, upic, connect text, fromfbid, action)
+
+
+
+3. send connect request
+
+
+
+4. set/get notifications
+ ()
+
+
+
+accept/reject request
+
+get connections/ requests
+
+post update 
+
+see friends status
+
+show interest
+
+settings
+
+
+
+-----------------------------DEVELOP API
+
+search users - [create dummy users in database]
+
+send connect request [temporarily all request will go to sachin jadhav]
+
+accept / reject request
+
+
+-----------------------------//DEVELOP
+
+
+
+fields 
+------------
+
+
+status > 
+uname, upic, lat, longi, address, status, update, expiry
+
+
+Profile >
+Uname, upic, address, 
+
+search friends
+
+
+
+
+ 

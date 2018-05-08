@@ -28,12 +28,16 @@ Route::get('sendOTP', 'UserController@sendOTP');
 //code done //verified
 Route::get('loginUser', 'UserController@checkAndAddNewUser');	
 
+Route::get('getSearchedUser', 'userController@getUsersForSearchText');
+
 Route::get('signOutUser', 'UserController@signOutUser');
 
 Route::get('getFriendsStatus', 'StatusController@getAllFriendsStatus');
 
 //code done //verified
 Route::get('getProfile', 'ProfileController@getUserProfile');
+
+Route::get('checkIfConnected', 'ProfileController@getCheckIfConnected');
 
 //code done // verified
 Route::get('getNotifications', 'NotificationController@getAllNotifications');

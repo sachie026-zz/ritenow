@@ -10,6 +10,8 @@ use App\ConnectRequest;
 use App\Connection;
 use Hash;
 
+use App\Helpers\RiteNowGlobal;
+
 class UserController extends Controller
 {
     //
@@ -32,7 +34,38 @@ class UserController extends Controller
     	}		
 	}
 	
+	public function getUsersForSearchText(Request $request){
+		try{
+			$searchedString = isset($request->uname) ? $request->uname : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+//			$fbid = "9970016888";
+			
+			if($fbid == null || $searchedString == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+			
+			//$searchedString = $request->uname;
+			$searchValues = preg_split('/\s+/', $searchedString, -1, PREG_SPLIT_NO_EMPTY); 
 
+			$users = User::where(function ($q) use ($searchValues) {
+			  foreach ($searchValues as $value) {
+				$q->orWhere('users.name', 'like', "%{$value}%");
+			  }
+			})
+			->join("profiles", 'users.fbid', '=','profiles.fbid')
+			->select('users.fbid', 'users.name', 'profiles.pic' )
+			->get();
+			return $users;	
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+
+	}
+	
 	public function createNewConnectionEntry($fbid){
 		try{
 			$present = Connection::where('fbid', $fbid)->count() == 1 ? true : false;
@@ -40,9 +73,10 @@ class UserController extends Controller
 		        $connection = new Connection;
 		        $connection->fbid = $fbid;
 		        $saved = $connection->save();
-					}
+			}
 		}
 		catch(Exception $ex){
+			return -1;
 		}
 	}
 
@@ -59,19 +93,27 @@ class UserController extends Controller
 			$picture = isset($request->picture) ? $request->picture : null;
 			$token = isset($request->token) ? $request->token : null;
 
-/*			
-			$fbid = "123";
-			$name = "Sachin Jadhav";
-			$email = "jadhavsachin174@gmail.com";
+			
+		/*	$fbid = "321";
+			$name = "Sachie";
+			$email = "jadhavsachin321@gmail.com";
 			$picture = "asdf.jpg";
-			$token = "asdfghjkl";
-*/			
+			$token = "s321";
+			*/
+			if($token == null || $name == null || $email == null)
+				return 5; // provide valid token / name / email
+			
+	//		if(!RiteNowGlobal::isValidToken($fbid, $token))
+	//			return 401;	// unauthorized or invalid token
+			
+			
     		$present = User::where('fbid', $fbid)->count() == 1 ? true : false;
     		if(!$present){
 		        $User = new User;
 		        $User->name = $name;
 		        $User->fbid = $fbid;
-		        $User->emailid = $email;		        
+		        $User->emailid = $email;	
+				$User->remember_token = $token;	
 		        $saved = $User->save();
 				if($saved == 1){
 					$this->createNewUserProfile($fbid, $name, $picture);
@@ -201,5 +243,15 @@ class UserController extends Controller
 		catch(Exception $ex){
 			return -1;
 		}				
+	}
+/*
+	public function isValidToken($fbid, $userToken){
+		$userData = User::where('fbid', $fbid)->get();
+		if($userToken != $userData[0]->remember_token)
+			return false;
+		else
+			return true;		
 	}	
+
+*/	
 }
