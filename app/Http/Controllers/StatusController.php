@@ -93,7 +93,7 @@ class StatusController extends Controller
 			$status->fbid = $fbid;
 			$status->status = $statusText;
 			$status->state = $state;
-			$status->latitude = $latitude;
+			$status->lattitude = $latitude;
 			$status->longitude = $longitude;
 			$status->address = $address;
 			$status->expires_at = $expiry;
