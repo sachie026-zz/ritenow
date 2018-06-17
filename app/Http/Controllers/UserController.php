@@ -47,9 +47,9 @@ class UserController extends Controller
 			if(!RiteNowGlobal::isValidToken($fbid, $token))
 				return 401;	// unauthorized or invalid token
 			
-			//$searchedString = $request->uname;
+				//$searchedString = $request->uname;
 			$searchValues = preg_split('/\s+/', $searchedString, -1, PREG_SPLIT_NO_EMPTY); 
-
+ 
 			$users = User::where(function ($q) use ($searchValues) {
 			  foreach ($searchValues as $value) {
 				$q->orWhere('users.name', 'like', "%{$value}%");
@@ -58,7 +58,20 @@ class UserController extends Controller
 			->join("profiles", 'users.fbid', '=','profiles.fbid')
 			->select('users.fbid', 'users.name', 'profiles.pic' )
 			->get();
-			return $users;	
+
+			$connections = Connection::where('fbid', $fbid)->get();
+			$connectedUsers = [];
+			//return $connections[0]->fbid;
+			foreach ($users as $user) {
+				//$q->orWhere('users.name', 'like', "%{$value}%");
+				
+				if (strpos($connections[0]->connections, '->'.$user->fbid.'->') == false) {
+					array_push($connectedUsers, $user);
+				}
+			  }
+
+			
+			return $connectedUsers;	
 		}
 		catch(Exception $ex){
 			return -1;
@@ -83,12 +96,14 @@ class UserController extends Controller
 	
 	public function checkAndAddNewUser(Request $request){
 		try{
+		//	return $request;
 			$fbid = isset($request->fbid) ? $request->fbid : null;
 			if(!$fbid)
 				return 3;
 
 
 			$name = isset($request->name) ? $request->name : null;
+			
 			$email = isset($request->email) ? $request->email : null;
 			$picture = isset($request->picture) ? $request->picture : null;
 			$token = isset($request->token) ? $request->token : null;

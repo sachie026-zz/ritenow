@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('fbid');
             $table->string('name');
             $table->string('emailid')->nullable();
+            $table->string('mobile')->nullable();
             $table->string('password')->nullable();
 			$table->rememberToken()->nullable();	
             $table->timestamps();

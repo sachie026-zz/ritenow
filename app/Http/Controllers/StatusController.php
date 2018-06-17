@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Status;
+use App\Connection;
 use App\User;
 use App\Profile;
 
+use App\Helpers\RiteNowGlobal;
 
 
 class StatusController extends Controller
@@ -35,6 +37,39 @@ class StatusController extends Controller
 		}
 		catch(Exception $ex){
 		}
+	}
+
+	public function getAllFriendsStatus(Request $request){
+		try{
+
+
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null )
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+			
+			$connections = Connection::where('fbid', $fbid)->get(); 
+			$allPosts = Status::all();
+
+			$usersStatus = [];
+			//return $connections[0]->fbid;
+			foreach ($allPosts as $post) {
+				if ( strpos($connections,  '->'.$post->fbid.'->') !== false) {
+					array_push($usersStatus, $post);
+				}
+			  }
+
+			
+			return $usersStatus;	
+		}
+		catch(Exception $ex){
+			return $ex;
+		}
+
 	}
 	
 	public function postRemoveStatus(){

@@ -26,45 +26,51 @@ Route::get('sendOTP', 'UserController@sendOTP');
 /////////////////// 
 
 //code done //verified
-Route::get('loginUser', 'UserController@checkAndAddNewUser');	
+Route::post('/loginUser', 'UserController@checkAndAddNewUser');	
 
-Route::get('getSearchedUser', 'userController@getUsersForSearchText');
+Route::get('/getSearchedUser', 'userController@getUsersForSearchText');
 
-Route::get('signOutUser', 'UserController@signOutUser');
+Route::get('/signOutUser', 'UserController@signOutUser');
 
-Route::get('getFriendsStatus', 'StatusController@getAllFriendsStatus');
+Route::get('/getFriendsStatus', 'StatusController@getAllFriendsStatus');
 
 //code done //verified
-Route::get('getProfile', 'ProfileController@getUserProfile');
+Route::get('/getProfile', 'ProfileController@getUserProfile');
 
-Route::get('checkIfConnected', 'ProfileController@getCheckIfConnected');
+Route::get('/checkIfConnected', 'ProfileController@getCheckIfConnected');
 
 //code done // verified
-Route::get('getNotifications', 'NotificationController@getAllNotifications');
+Route::get('/getNotifications', 'NotificationController@getAllNotifications');
 
-Route::get('getSettings', 'ProfileController@getSettings');
-
-//code done //verified
-Route::get('getConnections', 'ProfileController@getConnections');
+Route::get('/getSettings', 'ProfileController@getSettings');
 
 //code done //verified
-Route::get('getRequests', 'ProfileController@getRequests');
+Route::get('/getConnections', 'ProfileController@getConnections');
+
+//code done //verified
+Route::get('/getRequests', 'ProfileController@getRequests');
 
 
 //code done //verified
-Route::get('postSendConnectionRequest', 'NotificationController@postSendConnectRequest');
+Route::post('/postSendConnectionRequest', 'NotificationController@postSendConnectRequest');
+
+//code remaining 
+Route::get('postDisConnect', 'NotificationController@postSendConnectRequest');
 
 //code done //verified
-Route::get('postAddStatus', 'StatusController@postAddStatus');
+Route::get('/postAddStatus', 'StatusController@postAddStatus');
+
+//code remaining 
+Route::get('postShowInterest', 'StatusController@postAddStatus');
 
 //code done //verified
-Route::get('postRemoveStatus', 'StatusController@postRemoveStatus');
+Route::get('/postRemoveStatus', 'StatusController@postRemoveStatus');
 
 //code done //verified
-Route::get('postAcceptRequest', 'NotificationController@postAcceptRequest');
+Route::post('/postAcceptRequest', 'NotificationController@postAcceptRequest');
 
 //code done //verified
-Route::get('postRejectRequest', 'NotificationController@postRejectRequest');
+Route::post('/postRejectRequest', 'NotificationController@postRejectRequest');
 
 Route::get('postUpdateSettings', 'ProfileController@postUpdateSettings');
 

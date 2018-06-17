@@ -22,7 +22,8 @@ class CreateProfilesTable extends Migration
             $table->string('current_status_text')->nullable();
             $table->string('pic')->nullable();
 			$table->integer('connections_count')->default(0);
-			$table->integer('requests_count')->default(0);
+            $table->integer('requests_count')->default(0);
+            $table->integer('notifications_count')->default(0);
         });
     }
 
