@@ -52,15 +52,18 @@ class StatusController extends Controller
 			if(!RiteNowGlobal::isValidToken($fbid, $token))
 				return 401;	// unauthorized or invalid token
 			
-			$connections = Connection::where('fbid', $fbid)->get(); 
-			$allPosts = Status::all();
+			$connections = Connection::where('fbid', $fbid)->pluck("connections")[0]; 
+			$current_date=strtotime("now");
+			$allPosts = Status::whereDate("expires_at", ">=" ,date("Y-m-d", $current_date))->whereTime("expires_at", ">" ,date("h:i:s", $current_date))->get();
 
 			$usersStatus = [];
-			//return $connections[0]->fbid;
+
+			
 			foreach ($allPosts as $post) {
 				if ( strpos($connections,  '->'.$post->fbid.'->') !== false) {
 					array_push($usersStatus, $post);
 				}
+				// check if expired or not
 			  }
 
 			
@@ -116,6 +119,8 @@ class StatusController extends Controller
 			$longitude = isset($request->longitude) ? $request->longitude : null;
 			$address = isset($request->address) ? $request->address : null;
 			$state = isset($request->state) ? $request->state : null;
+			$mobile = isset($request->mobile) ? $request->mobile : null;
+			$mood = isset($request->mood) ? $request->mood : null;
 			$statusText = isset($request->status) ? $request->status : null;
 			$expiry = date("Y-m-d H:i:s", time() + 30);
 			
@@ -128,6 +133,8 @@ class StatusController extends Controller
 			$status->fbid = $fbid;
 			$status->status = $statusText;
 			$status->state = $state;
+			$status->mobile = $mobile;
+			$status->mood = $mood;
 			$status->lattitude = $latitude;
 			$status->longitude = $longitude;
 			$status->address = $address;

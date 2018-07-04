@@ -55,13 +55,13 @@ Route::get('/getRequests', 'ProfileController@getRequests');
 Route::post('/postSendConnectionRequest', 'NotificationController@postSendConnectRequest');
 
 //code remaining 
-Route::get('postDisConnect', 'NotificationController@postSendConnectRequest');
+Route::get('/postDisConnect', 'NotificationController@postSendConnectRequest');
 
 //code done //verified
-Route::get('/postAddStatus', 'StatusController@postAddStatus');
+Route::post('/postAddStatus', 'StatusController@postAddStatus');
 
 //code remaining 
-Route::get('postShowInterest', 'StatusController@postAddStatus');
+Route::get('/postShowInterest', 'StatusController@postAddStatus');
 
 //code done //verified
 Route::get('/postRemoveStatus', 'StatusController@postRemoveStatus');
@@ -72,7 +72,7 @@ Route::post('/postAcceptRequest', 'NotificationController@postAcceptRequest');
 //code done //verified
 Route::post('/postRejectRequest', 'NotificationController@postRejectRequest');
 
-Route::get('postUpdateSettings', 'ProfileController@postUpdateSettings');
+Route::get('/postUpdateSettings', 'ProfileController@postUpdateSettings');
 
 
 //Route::get('signUp', 'UserController@signupUser');
