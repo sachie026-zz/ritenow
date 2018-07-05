@@ -112,8 +112,13 @@ class StatusController extends Controller
 					return 4;	//authentication problem 'token dosent match'		
 			}
 			else
-				return 3;
+				return 5;
 			
+			$statusData = Status::where('fbid', $fbid)->get();
+		//	return Status::find($statusData[0]->id);
+			// if( $statusData->count())
+			//	return 3;
+				
 			$latitude = isset($request->latitude) ? $request->latitude : null;
 			$longitude = isset($request->longitude) ? $request->longitude : null;
 			$address = isset($request->address) ? $request->address : null;
@@ -128,7 +133,12 @@ class StatusController extends Controller
 			$pName = $userProfileData[0]->name;
 			$pPic = $userProfileData[0]->pic;
 
-			$status = new Status;
+			$status = null;
+			if($statusData->count() > 0)
+				$status = Status::find($statusData[0]->id);
+			else
+				$status = new Status;
+	
 			$status->fbid = $fbid;
 			$status->status = $statusText;
 			$status->state = $state;
