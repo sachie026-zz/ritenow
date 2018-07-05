@@ -54,16 +54,15 @@ class StatusController extends Controller
 			
 			$connections = Connection::where('fbid', $fbid)->pluck("connections")[0]; 
 			$current_date=strtotime("now");
-			$allPosts = Status::whereDate("expires_at", ">=" ,date("Y-m-d", $current_date))->whereTime("expires_at", ">" ,date("h:i:s", $current_date))->get();
+			$allPosts = Status::whereDate("expires_at", ">=" ,date("Y-m-d", $current_date))->get();
 
 			$usersStatus = [];
-
 			
 			foreach ($allPosts as $post) {
-				if ( strpos($connections,  '->'.$post->fbid.'->') !== false) {
+				$interval = strtotime($post->expires_at) - $current_date;
+				if ( strpos($connections,  '->'.$post->fbid.'->') !== false &&  $interval >= 0 ) {
 					array_push($usersStatus, $post);
 				}
-				// check if expired or not
 			  }
 
 			
