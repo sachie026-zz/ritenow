@@ -126,8 +126,14 @@ class StatusController extends Controller
 			$mobile = isset($request->mobile) ? $request->mobile : null;
 			$mood = isset($request->mood) ? $request->mood : null;
 			$statusText = isset($request->status) ? $request->status : null;
-			$next_staturday =strtotime("next Saturday");
-			$expiry = date("Y-m-d H:i:s", $next_staturday);
+
+			$duration = isset($request->duration) ? $request->duration : null;
+			$durationUnit = isset($request->durationUnit) ? $request->durationUnit : null;
+
+			//$next_staturday =strtotime("next Saturday");
+			
+		//	$expiry = date("Y-m-d H:i:s", $next_staturday);
+			$expiry = date("Y-m-d H:i:s", strtotime($duration."+"." ".$durationUnit));
 			
 			$userProfileData = Profile::where('fbid', $fbid)->get();	
 			
