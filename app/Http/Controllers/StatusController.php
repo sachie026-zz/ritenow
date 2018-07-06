@@ -133,7 +133,8 @@ class StatusController extends Controller
 			//$next_staturday =strtotime("next Saturday");
 			
 		//	$expiry = date("Y-m-d H:i:s", $next_staturday);
-			$expiry = date("Y-m-d H:i:s", strtotime($duration."+"." ".$durationUnit));
+		//return $duration."+"." ".$durationUnit.date("Y-m-d H:i:s", strtotime("+6 hours"))." ".date("Y-m-d H:i:s", $next_staturday);
+			$expiry = date("Y-m-d H:i:s", strtotime("+".$duration." ".$durationUnit));
 			
 			$userProfileData = Profile::where('fbid', $fbid)->get();	
 			
