@@ -52,9 +52,10 @@ class ProfileController extends Controller
 			->join('posts', 'posts.fbid', '=', 'profiles.fbid')
 			->get(); 	
 
+			//return (string)$userProfileData[0];	
 			//return  count($userProfileData);
 //			$userProfileData['follow'] = true;
-			return count($userProfileData) > 0 ? $userProfileData[0] : null;
+			return count($userProfileData) > 0 ? $userProfileData : null;
 		}
 		catch(Exception $ex){
 			return -1;
