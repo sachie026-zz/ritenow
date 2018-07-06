@@ -74,9 +74,25 @@ class StatusController extends Controller
 
 	}
 	
-	public function postRemoveStatus(){
+	public function postRemoveStatus(Request $request){
 		try{
-			$fbid = "9970016888";
+
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			if(!$fbid)
+				return 3;
+
+			$token = isset($request->token) ? $request->token : null;
+			if($token)
+			{
+				$userData = User::where('fbid', $fbid)->get();
+				if($token != $userData[0]->remember_token)
+					return 4;	//authentication problem 'token dosent match'		
+			}
+			else
+				return 5;
+
+
+			//$fbid = "9970016888";
 			$row = Status::where('fbid', $fbid)->get();
     		$present = $row->count() == 1 ? true : false;
 			if($present){
