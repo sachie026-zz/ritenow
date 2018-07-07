@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Profile;
 use App\Connection;
+use App\Status;
 use App\ConnectRequest;
 use DB;
 use App\Helpers\RiteNowGlobal;
@@ -46,12 +47,22 @@ class ProfileController extends Controller
 			if(!RiteNowGlobal::isValidToken($fbid, $token))
 				return 401;	// unauthorized or invalid token
 
-			$userProfileData = 
-			DB::table('profiles')
-			->where('profiles.fbid', $userid)
-			->join('posts', 'posts.fbid', '=', 'profiles.fbid')
-			->get(); 	
 
+			$userProfileData = null;	
+			$profileData = Status::where("fbid", $userid)->get(); 
+			if(count($profileData) > 0){
+				$userProfileData = 
+				DB::table('profiles')
+				->where('profiles.fbid', $userid)
+				->join('posts', 'posts.fbid', '=', 'profiles.fbid')
+				->get(); 	
+
+			}
+			else{
+				$userProfileData = Profile::where("fbid", $userid)->get(); 
+
+			}
+	
 			//return (string)$userProfileData[0];	
 			//return  count($userProfileData);
 //			$userProfileData['follow'] = true;
