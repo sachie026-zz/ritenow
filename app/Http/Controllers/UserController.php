@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Otp;
 use App\User;
 use App\Profile;
-use App\ConnectRequest;
+use App\Connectrequest;
 use App\Connection;
 use Hash;
 

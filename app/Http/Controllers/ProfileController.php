@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Profile;
 use App\Connection;
 use App\Status;
-use App\ConnectRequest;
+use App\Connectrequest;
 use DB;
 use App\Helpers\RiteNowGlobal;
 
@@ -139,7 +139,7 @@ class ProfileController extends Controller
 			if(!RiteNowGlobal::isValidToken($fbid, $token))
 				return 401;	// unauthorized or invalid token
 			//$fbid = "123";
-			$userRequests = ConnectRequest::where('fbid', $fbid)->get();
+			$userRequests = Connectrequest::where('fbid', $fbid)->get();
 			return $userRequests;
 		}
 		catch(Exception $ex){
