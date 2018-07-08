@@ -28,7 +28,7 @@ Route::get('sendOTP', 'UserController@sendOTP');
 //code done //verified
 Route::post('/loginUser', 'UserController@checkAndAddNewUser');	
 
-Route::get('/getSearchedUser', 'userController@getUsersForSearchText');
+Route::get('/getSearchedUser', 'UserController@getUsersForSearchText');
 
 Route::get('/signOutUser', 'UserController@signOutUser');
 
@@ -64,7 +64,7 @@ Route::post('/postAddStatus', 'StatusController@postAddStatus');
 Route::get('/postShowInterest', 'StatusController@postAddStatus');
 
 //code done //verified
-Route::get('/postRemoveStatus', 'StatusController@postRemoveStatus');
+Route::post('/postRemoveStatus', 'StatusController@postRemoveStatus');
 
 //code done //verified
 Route::post('/postAcceptRequest', 'NotificationController@postAcceptRequest');
