@@ -38,8 +38,8 @@ class NotificationController extends Controller
 			if(count($userProfileData) == 0 || count($sendersProfileData) == 0)
 				return 3;
 			
-			$pName = $userProfileData[0]->name;
-			$pPic = $userProfileData[0]->pic;
+			$pName = $sendersProfileData[0]->name;
+			$pPic = $sendersProfileData[0]->pic;
 			
 
 			$present = Connectrequest::where('fbid', $fbid)->where('from', $from)->count() == 1 ? true : false;
