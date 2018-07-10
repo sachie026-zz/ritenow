@@ -61,12 +61,15 @@ class UserController extends Controller
 
 			$connections = Connection::where('fbid', $fbid)->get();
 			$connectedUsers = [];
-			//return $connections[0]->fbid;
+			//return $users;
 			foreach ($users as $user) {
-				//$q->orWhere('users.name', 'like', "%{$value}%");
-				
-				if (strpos($connections[0]->connections, '->'.$user->fbid.'->') == false) {
-					array_push($connectedUsers, $user);
+				$checkUser =  strpos($connections[0]->connections, '->'.$user->fbid.'->');
+				if ($checkUser == false ) {
+					if((string)$checkUser == '0'){
+					}
+					else{
+						array_push($connectedUsers, $user);
+					}
 				}
 			  }
 
