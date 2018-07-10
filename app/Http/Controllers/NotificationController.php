@@ -35,6 +35,7 @@ class NotificationController extends Controller
 			$userProfileData = Profile::where('fbid', $fbid)->get();
 			$sendersProfileData = Profile::where('fbid', $from)->get();
 			
+			//return $sendersProfileData;
 			if(count($userProfileData) == 0 || count($sendersProfileData) == 0)
 				return 3;
 			
@@ -167,14 +168,23 @@ class NotificationController extends Controller
 			if($present){
 				//$requestRow = ConnectRequest::find($row[0]->fbid);				
 				$connectionData = Connection::find($row->fbid);
-				//return $connectionData;
 				if($connectionData->connections == null){
 					$connectionData->connections = '->'.$row->from.'->';
 				}
 				else{
 					$connectionData->connections = $connectionData->connections.$row->from.'->'; 
 				}
-				$connectionData->save();					
+				$connectionData->save();	
+		
+				
+				$connectionData = Connection::find($row->from);
+				if($connectionData->connections == null){
+					$connectionData->connections = '->'.$row->fbid.'->';
+				}
+				else{
+					$connectionData->connections = $connectionData->connections.$row->fbid.'->'; 
+				}
+				$connectionData->save();	
 				
 				
 				$userProfileData = Profile::where('fbid', $row->fbid)->get();							
