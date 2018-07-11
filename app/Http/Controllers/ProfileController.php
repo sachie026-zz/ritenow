@@ -59,7 +59,7 @@ class ProfileController extends Controller
 				->join('posts', 'posts.fbid', '=', 'profiles.fbid')
 				->get();
 				$interval = strtotime($userProfileData[0]->expires_at) - $current_date;
-				$userProfileData[0]->expires_at =  $interval <= 0 ? "expired" : $userProfileData[0]->expires_at;
+				$userProfileData[0]->expires_at =  $interval <= 0 ? "Expired" : $userProfileData[0]->expires_at;
 
 			}
 			else{
