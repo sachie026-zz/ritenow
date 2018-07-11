@@ -93,12 +93,7 @@ class NotificationController extends Controller
 		$userProfile->save();
 	}
 	
-	public function decrementConnectionsCountForId($id){
-		
-		$userProfile = Profile::find($id);
-		$userProfile->decrement('connections_count');
-		$userProfile->save();
-	}
+	
 	
 	public function postRejectRequest(Request $request)
 	{
@@ -136,6 +131,13 @@ class NotificationController extends Controller
 		catch(Exception $ex){
 			return -1;
 		}
+	}
+
+	public function decrementConnectionsCountForId($id){
+		
+		$userProfile = Profile::find($id);
+		$userProfile->decrement('connections_count');
+		$userProfile->save();
 	}
 
 	public function postDisConnect(Request $request){
@@ -176,6 +178,9 @@ class NotificationController extends Controller
 				$connectionData->connections = str_replace('->'.$fbid.'->', "->", $connectionData->connections); 
 			}
 			$connectionData->save();
+
+			$this->decrementConnectionsCountForId($fbid);
+			$this->decrementConnectionsCountForId($removeUserId);
 
 			return 1;
 	
