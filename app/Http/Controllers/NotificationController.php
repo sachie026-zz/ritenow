@@ -136,7 +136,7 @@ class NotificationController extends Controller
 	public function decrementConnectionsCountForId($id){
 		$userProfileData = Profile::where('fbid', $id)->get();
 
-		$userProfile = Profile::find($userProfileData[0]->fbid);
+		$userProfile = Profile::find($userProfileData[0]->id);
 		$userProfile->decrement('connections_count');
 		$userProfile->save();
 	}
