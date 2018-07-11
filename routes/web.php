@@ -55,7 +55,7 @@ Route::get('/getRequests', 'ProfileController@getRequests');
 Route::post('/postSendConnectionRequest', 'NotificationController@postSendConnectRequest');
 
 //code remaining 
-Route::get('/postDisConnect', 'NotificationController@postSendConnectRequest');
+Route::post('/postDisConnect', 'NotificationController@postDisConnect');
 
 //code done //verified
 Route::post('/postAddStatus', 'StatusController@postAddStatus');

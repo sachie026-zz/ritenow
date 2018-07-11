@@ -137,6 +137,54 @@ class NotificationController extends Controller
 			return -1;
 		}
 	}
+
+	public function postDisConnect(Request $request){
+		try{
+			$removeUserId = isset($request->userid) ? $request->userid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+	//			$fbid = "9970016888";
+			
+			
+			if($fbid == null || $removeUserId == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+			
+			$fbUser = Connection::where('fbid',$fbid);
+			$removeUser = Connection::where('fbid', $removeUserId);
+
+			if(count($fbUser) <= 0 && count($removeUser) <= 0)
+				return 2;
+	
+			//return $fbUser;	
+			$connectionData = Connection::find($fbid);
+			if($connectionData->connections == '->'.$removeUserId.'->'){
+				$connectionData->connections = null;
+			}
+			else{
+				$connectionData->connections = str_replace('->'.$removeUserId.'->', "->", $connectionData->connections); 
+			}
+			$connectionData->save();
+			
+			$connectionData = Connection::find($removeUserId);
+			if($connectionData->connections == '->'.$fbid.'->'){
+				$connectionData->connections = null;
+			}
+			else{
+				$connectionData->connections = str_replace('->'.$fbid.'->', "->", $connectionData->connections); 
+			}
+			$connectionData->save();
+
+			return 1;
+	
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+
+	}
 	
 	public function postAcceptRequest(Request $request)
 	{
@@ -209,6 +257,7 @@ class NotificationController extends Controller
 			return 1;
 		}
 		catch(Exception $ex){
+			return -1;
 		}
 	}
 	
