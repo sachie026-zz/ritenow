@@ -49,23 +49,23 @@ class ProfileController extends Controller
 
 
 			$userProfileData = null;	
+		//	return "1";
+		$current_date=strtotime("now");
 			$profileData = Status::where("fbid", $userid)->get(); 
 			if(count($profileData) > 0){
 				$userProfileData = 
 				DB::table('profiles')
 				->where('profiles.fbid', $userid)
 				->join('posts', 'posts.fbid', '=', 'profiles.fbid')
-				->get(); 	
+				->get();
+				$interval = strtotime($userProfileData[0]->expires_at) - $current_date;
+				$userProfileData[0]->expires_at =  $interval <= 0 ? "expired" : $userProfileData[0]->expires_at;
 
 			}
 			else{
 				$userProfileData = Profile::where("fbid", $userid)->get(); 
 
 			}
-	
-			//return (string)$userProfileData[0];	
-			//return  count($userProfileData);
-//			$userProfileData['follow'] = true;
 			return count($userProfileData) > 0 ? $userProfileData : null;
 		}
 		catch(Exception $ex){
