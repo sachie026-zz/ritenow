@@ -61,7 +61,7 @@ class ProfileController extends Controller
 				$interval = strtotime($userProfileData[0]->expires_at) - $current_date;
 //				$userProfileData[0]->expires_at =  $interval <= 0 ? "Expired" : $this->dateDiff(strtotime($userProfileData[0]->expires_at) , $current_date, 2);
 				$userProfileData[0]->expires_at =  $interval <= 0 ? "Expired" : $userProfileData[0]->expires_at;
-
+				$userProfileData[0]->created_at = $current_date;
 			}
 			else{
 				$userProfileData = Profile::where("fbid", $userid)->get(); 
