@@ -63,13 +63,15 @@ class UserController extends Controller
 			$connectedUsers = [];
 			//return $users;
 			foreach ($users as $user) {
-				$checkUser =  strpos($connections[0]->connections, '->'.$user->fbid.'->');
-				if ($checkUser == false ) {
-					if((string)$checkUser == '0'){
-					}
-					else{
-						array_push($connectedUsers, $user);
-					}
+				if($fbid != $user->fbid){
+					$checkUser =  strpos($connections[0]->connections, '->'.$user->fbid.'->');
+					if ($checkUser == false ) {
+						if((string)$checkUser == '0'){
+						}
+						else{
+							array_push($connectedUsers, $user);
+						}
+					}	
 				}
 			  }
 
