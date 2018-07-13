@@ -125,8 +125,11 @@ class StatusController extends Controller
 			
 			foreach ($allPosts as $post) {
 				$interval = strtotime($post->expires_at) - $current_date;
+				//return $interval;
 				if ( strpos($connections,  '->'.$post->fbid.'->') !== false &&  $interval >= 0 ) {
 					$post->expires_at = $this->dateDiff(strtotime($post->expires_at) , $current_date, 2);
+					//$post->updated_at = $interval;
+					$post->interval = $interval;
 					array_push($usersStatus, $post);
 				}
 			  }
