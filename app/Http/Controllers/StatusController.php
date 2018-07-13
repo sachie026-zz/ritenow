@@ -129,7 +129,7 @@ class StatusController extends Controller
 				if ( strpos($connections,  '->'.$post->fbid.'->') !== false &&  $interval >= 0 ) {
 					$post->expires_at = $this->dateDiff(strtotime($post->expires_at) , $current_date, 2);
 					//$post->updated_at = $interval;
-					$post->interval = $interval;
+					$post->interval = $interval*1000;
 					array_push($usersStatus, $post);
 				}
 			  }
