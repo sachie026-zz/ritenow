@@ -204,14 +204,15 @@ class StatusController extends Controller
 			
 			if(!RiteNowGlobal::isValidToken($fbid, $token))
 				return 401;	// unauthorized or invalid token
-
-			//return $postId;	
 			
 			$postRow = Status::find($postId);
-			return $postRow;
+
+			if(count($postRow) == 0)
+				return 2;
 
 			if($postRow->interested == null)
 				return [];
+
 
 			$interestedUserArray =  explode("->",$postRow->interested);
 			$count = count($interestedUserArray);
@@ -221,7 +222,7 @@ class StatusController extends Controller
 				return $users;			
 			}
 			else{
-				return null;
+				return [];
 			}
 		}
 		catch(Exception $ex){
@@ -295,6 +296,9 @@ class StatusController extends Controller
 			
 			$postRow = Status::find($postId);
 			//return $postRow;
+
+			if(count($postRow) == 0)
+				return 2;
 
 			if($postRow->viewers == null)
 				return [];
