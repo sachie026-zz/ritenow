@@ -210,6 +210,9 @@ class StatusController extends Controller
 			$postRow = Status::find($postId);
 			//return $postRow;
 
+			if($postRow->interested == null)
+				return [];
+
 			$interestedUserArray =  explode("->",$postRow->interested);
 			$count = count($interestedUserArray);
 
@@ -292,6 +295,9 @@ class StatusController extends Controller
 			
 			$postRow = Status::find($postId);
 			//return $postRow;
+
+			if($postRow->viewers == null)
+				return [];
 
 			$viewersArray =  explode("->",$postRow->viewers);
 			$count = count($viewersArray);
