@@ -208,7 +208,7 @@ class StatusController extends Controller
 			//return $postId;	
 			
 			$postRow = Status::find($postId);
-			//return $postRow;
+			return $postRow;
 
 			if($postRow->interested == null)
 				return [];
