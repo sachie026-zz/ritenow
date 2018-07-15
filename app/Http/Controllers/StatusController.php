@@ -142,7 +142,173 @@ class StatusController extends Controller
 		}
 
 	}
+
+	public function postShowInterest(Request $request){
+		try{
+			$postId = isset($request->postid) ? $request->postid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null || $postId == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+			
+			$postRow = Status::find($postId);
+
+			if($postRow != null)	
+				$present = count($postRow) > 0 ? true : false;	
+			else 
+				$present = false;
+			
+			if($present){
+				if($postRow->interested == null){
+					$postRow->interested = '->'.$fbid.'->';
+					$postRow->increment('interest_count');
+				}
+				else{
+					if( strpos($postRow->interested,  '->'.$fbid.'->') !== false &&  strpos($postRow->interested,  '->'.$fbid.'->') >= 0)
+					{
+						return 3;
+					}
+					else{
+						$postRow->interested  = $postRow->interested .$fbid.'->'; 
+						$postRow->increment('interest_count');
+					}
+				}
+
+				$postRow->save();		
+				//return 1;
+				//addnotification()		
+			}
+			else
+				return 2;
+			
+			return 1;
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
+
+	public function getInterestedUsersForStatus(Request $request)
+	{
+		try{
+			$postId = isset($request->postid) ? $request->postid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+
+			//return $postId;	
+			
+			$postRow = Status::find($postId);
+			//return $postRow;
+
+			$interestedUserArray =  explode("->",$postRow->interested);
+			$count = count($interestedUserArray);
+
+			if($count > 0){
+				$users = Profile::whereIn('fbid', $interestedUserArray)->get();
+				return $users;			
+			}
+			else{
+				return null;
+			}
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
+
+	public function postAddViewCount(Request $request){
+		try{
+			$postId = isset($request->postid) ? $request->postid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null || $postId == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+			
+			$postRow = Status::find($postId);
+
+			if($postRow != null)	
+				$present = count($postRow) > 0 ? true : false;	
+			else 
+				$present = false;
+			
+			if($present){
+				if($postRow->viewers == null){
+					$postRow->viewers = '->'.$fbid.'->';
+					$postRow->increment('view_count');
+				}
+				else{
+					if( strpos($postRow->viewers,  '->'.$fbid.'->') !== false &&  strpos($postRow->viewers,  '->'.$fbid.'->') >= 0)
+					{
+						return 3;
+					}
+					else{
+						$postRow->viewers  = $postRow->viewers .$fbid.'->'; 
+						$postRow->increment('view_count');
+					}
+				}
+
+				$postRow->save();		
+				//return 1;
+				//addnotification()		
+			}
+			else
+				return 2;
+			
+			return 1;
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
 	
+	public function getStatusViewers(Request $request)
+	{
+		try{
+			$postId = isset($request->postid) ? $request->postid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+
+			//return $postId;	
+			
+			$postRow = Status::find($postId);
+			//return $postRow;
+
+			$viewersArray =  explode("->",$postRow->viewers);
+			$count = count($viewersArray);
+
+			if($count > 0){
+				$users = Profile::whereIn('fbid', $viewersArray)->get();
+				return $users;			
+			}
+			else{
+				return null;
+			}
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
+
 	public function postRemoveStatus(Request $request){
 		try{
 

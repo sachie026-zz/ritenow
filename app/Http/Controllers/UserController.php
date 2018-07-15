@@ -98,6 +98,17 @@ class UserController extends Controller
 		}
 	}
 
+	public function deleteUser(Request $request){
+		$fbid = isset($request->fbid) ? $request->fbid : null;
+		$token = isset($request->token) ? $request->token : null;
+		
+		if($fbid == null || $userid == null)
+			return 5;
+		
+		if(!RiteNowGlobal::isValidToken($fbid, $token))
+			return 401;	// unauthorized or invalid token
+
+	}
 	
 	public function checkAndAddNewUser(Request $request){
 		try{

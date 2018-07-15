@@ -25,8 +25,7 @@ Route::get('sendOTP', 'UserController@sendOTP');
 
 /////////////////// 
 
-//code done //verified
-Route::post('/loginUser', 'UserController@checkAndAddNewUser');	
+
 
 Route::get('/getSearchedUser', 'UserController@getUsersForSearchText');
 
@@ -48,7 +47,19 @@ Route::get('/getSettings', 'ProfileController@getSettings');
 Route::get('/getConnections', 'ProfileController@getConnections');
 
 //code done //verified
+Route::get('/getInterestedUsers', 'StatusController@getInterestedUsersForStatus');
+
+//code done //verified
+Route::get('/getStatusViewers', 'StatusController@getStatusViewers');
+
+//code done //verified
 Route::get('/getRequests', 'ProfileController@getRequests');
+
+//code done //verified
+Route::post('/loginUser', 'UserController@checkAndAddNewUser');	
+
+//code done //verified
+Route::post('/deleteUser', 'UserController@deleteUser');	
 
 
 //code done //verified
@@ -61,7 +72,10 @@ Route::post('/postDisConnect', 'NotificationController@postDisConnect');
 Route::post('/postAddStatus', 'StatusController@postAddStatus');
 
 //code remaining 
-Route::get('/postShowInterest', 'StatusController@postAddStatus');
+Route::post('/postShowInterest', 'StatusController@postShowInterest');
+
+//code remaining 
+Route::post('/postAddViewCount', 'StatusController@postAddViewCount');
 
 //code done //verified
 Route::post('/postRemoveStatus', 'StatusController@postRemoveStatus');
