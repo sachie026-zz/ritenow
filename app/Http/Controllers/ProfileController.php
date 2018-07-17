@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Profile;
 use App\Connection;
+use App\Postrecord;
 use App\Status;
 use App\Connectrequest;
 use DB;
@@ -193,6 +194,25 @@ class ProfileController extends Controller
 		}
 	}
 	
+	public function getPostHistory(Request $request){
+		try{
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+
+			$userRecords = Postrecord::where('fbid', $fbid)->get();
+			return $userRecords;
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
+
 	public function getRequests(Request $request)
 	{
 		try{
@@ -214,10 +234,35 @@ class ProfileController extends Controller
 		}
 	}
 	
-	public function updateSetting()
+	public function postUpdateProfile(Request $request)
 	{
 		try{
+
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
 			
+			if($fbid == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+			
+			//$status = null;
+			$recordRow = Profile::where('fbid',$fbid)->get();
+			
+			if($recordRow->count() <= 0)
+				return 2;
+
+			$livesin = isset($request->livesin) ? $request->livesin : null;
+			$fromaddress = isset($request->fromaddress) ? $request->fromaddress : null;
+			$mbl = isset($request->mobile) ? $request->mobile : null;
+
+			$record = Profile::find($recordRow[0]->id);	
+			$record->lives_in = $livesin;
+			$record->from_address = $fromaddress;
+			$record->mobile = $mbl;
+			$saved = $record->save();
+			return $saved ? 1 : 0;    
 		}
 		catch(Exception $ex){
 		}

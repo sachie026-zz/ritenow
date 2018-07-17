@@ -39,6 +39,9 @@ Route::get('/getProfile', 'ProfileController@getUserProfile');
 Route::get('/checkIfConnected', 'ProfileController@getCheckIfConnected');
 
 //code done // verified
+Route::get('/getPostRecords', 'ProfileController@getPostHistory');
+
+//code done // verified
 Route::get('/getNotifications', 'NotificationController@getAllNotifications');
 
 Route::get('/getSettings', 'ProfileController@getSettings');
@@ -86,7 +89,7 @@ Route::post('/postAcceptRequest', 'NotificationController@postAcceptRequest');
 //code done //verified
 Route::post('/postRejectRequest', 'NotificationController@postRejectRequest');
 
-Route::get('/postUpdateSettings', 'ProfileController@postUpdateSettings');
+Route::post('/postUpdateProfile', 'ProfileController@postUpdateProfile');
 
 
 //Route::get('signUp', 'UserController@signupUser');

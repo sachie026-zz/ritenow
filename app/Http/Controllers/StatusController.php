@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Status;
+use App\Postrecord;
 use App\Connection;
 use App\User;
 use App\Profile;
@@ -341,13 +342,34 @@ class StatusController extends Controller
 			$row = Status::where('fbid', $fbid)->get();
     		$present = $row->count() == 1 ? true : false;
 			if($present){
-				$statusRow = Status::find($row[0]->id)	;
-				$statusRow->delete();
+				$statusRow = Status::find($row[0]->id);
+				//return $statusRow;
+				
 				
 				$userProfileData = Profile::where('fbid', $fbid)->get();
 				$userProfile = Profile::find($userProfileData[0]->id);
 				$userProfile->current_status_text = null;
 				$userProfile->save();
+
+
+				$postrecord = new Postrecord;
+				$postrecord->fbid = $statusRow->fbid;
+				$postrecord->status = $statusRow->status;
+				$postrecord->state = $statusRow->state;
+				$postrecord->mobile =$statusRow->mobile;
+				$postrecord->mood = $statusRow->mood;
+				$postrecord->lattitude = $statusRow->lattitude;
+				$postrecord->longitude = $statusRow->longitude;
+				$postrecord->address = $statusRow->address;
+				$postrecord->expires_at = $statusRow->expires_at;
+				$postrecord->created_at = $statusRow->created_at;
+				$postrecord->updated_at = $statusRow->updated_at;
+				$postrecord->profile_name = $statusRow->profile_name;
+				$postrecord->profile_pic = $statusRow->profile_pic;
+				$postrecord->save();
+
+				$statusRow->delete();
+
 				return 1;
 			}
 			return 2;
