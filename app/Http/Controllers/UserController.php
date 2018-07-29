@@ -56,7 +56,7 @@ class UserController extends Controller
 			  }
 			})
 			->join("profiles", 'users.fbid', '=','profiles.fbid')
-			->select('users.fbid', 'users.name', 'profiles.pic' )
+			->select('users.fbid', 'users.name', 'profiles.pic', 'profiles.lives_in', 'profiles.from_address' )
 			->get();
 
 			$connections = Connection::where('fbid', $fbid)->get();
