@@ -59,6 +59,7 @@ class ProfileController extends Controller
 				->where('profiles.fbid', $userid)
 				->join('posts', 'posts.fbid', '=', 'profiles.fbid')
 				->get();
+//				return $userProfileData;
 				$interval = strtotime($userProfileData[0]->expires_at) - $current_date;
 //				$userProfileData[0]->expires_at =  $interval <= 0 ? "Expired" : $this->dateDiff(strtotime($userProfileData[0]->expires_at) , $current_date, 2);
 				$userProfileData[0]->expires_at =  $interval <= 0 ? "Expired" : strtotime($userProfileData[0]->expires_at);
@@ -69,6 +70,11 @@ class ProfileController extends Controller
 				$userProfileData = Profile::where("fbid", $userid)->get(); 
 
 			}
+
+			$userRecordsCount = Postrecord::where('fbid', $userid)->count();
+			$userProfileData[0]->historyCount = $userRecordsCount;
+			$userProfileData[0]->userConnectStatus = ($fbid == $userid)  ? -1 : RiteNowGlobal::getCheckIfConnected($fbid, $userid) ;
+
 			return count($userProfileData) > 0 ? $userProfileData : null;
 		}
 		catch(Exception $ex){

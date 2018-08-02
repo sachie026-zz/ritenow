@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 
 use App\Connection;
+use App\Connectrequest;
 use App\User;
 
 
@@ -27,13 +28,29 @@ class RiteNowGlobal {
 			$connections = Connection::find($fromid);
 			$ids = $connections->connections;
 						
-			$ids_array = explode("->",$ids);
 
+			$requested = Connectrequest::where('fbid', $toid)->where('from', $fromid)->count();
+			$accept = Connectrequest::where('fbid', $fromid)->where('from', $toid)->count();
+		
+			//$secondUserRequests = Connectrequest::where('fbid', $fromid)->get();
+
+			$ids_array = explode("->",$ids);
+		
 			if(in_array($toid, $ids_array)){
-				return true;
+				return 0; //"Connected";
+			}
+			
+			if($requested > 0)
+			{
+				//return "Requested";
+				return 1; //"Requested";
+			}
+			
+			if($accept > 0){
+				return 2; // "Accept";
 			}
 			else{
-				return false;
+				return 3; //"send Connect Request";
 			}			
 		}
 		catch(Exception $ex){
