@@ -198,14 +198,15 @@ class ProfileController extends Controller
 		try{
 			$fbid = isset($request->fbid) ? $request->fbid : null;
 			$token = isset($request->token) ? $request->token : null;
+			$userid = isset($request->userid) ? $request->userid : null;
 			
-			if($fbid == null)
+			if($fbid == null || $userid == null)
 				return 5;
 			
 			if(!RiteNowGlobal::isValidToken($fbid, $token))
 				return 401;	// unauthorized or invalid token
 
-			$userRecords = Postrecord::where('fbid', $fbid)->get();
+			$userRecords = Postrecord::where('fbid', $userid)->get();
 			return $userRecords;
 		}
 		catch(Exception $ex){
