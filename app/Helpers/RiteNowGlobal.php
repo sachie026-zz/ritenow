@@ -29,8 +29,8 @@ class RiteNowGlobal {
 			$ids = $connections->connections;
 						
 
-			$requested = Connectrequest::where('fbid', $toid)->where('from', $fromid)->count();
-			$accept = Connectrequest::where('fbid', $fromid)->where('from', $toid)->count();
+			$accept = Connectrequest::where('fbid', $toid)->where('from', $fromid)->count();
+			$requested = Connectrequest::where('fbid', $fromid)->where('from', $toid)->count();
 		
 			//$secondUserRequests = Connectrequest::where('fbid', $fromid)->get();
 
