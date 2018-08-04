@@ -191,6 +191,39 @@ class NotificationController extends Controller
 		}
 
 	}
+
+	public function postCancelRequest(Request $request){
+		try{
+			
+			$from = isset($request->fromid) ? $request->fromid : null;			
+			$rid = isset($request->rid) ? $request->rid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($rid == null || $from == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($from, $token))
+				return 401;	// unauthorized or invalid token
+			
+
+			$connectionRequestData = Connectrequest::find($rid);
+			//return $connectionRequestData->fbid;
+			if($connectionRequestData != null){
+				$connectionRequestData->delete();
+
+				$userProfileData = Profile::where('fbid', $connectionRequestData->fbid)->get();							
+				$id = $userProfileData[0]->id;
+				$this->decrementRequestCountForId($id);
+
+			}
+			return 1;	
+			
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	
+	}
 	
 	public function postAcceptRequest(Request $request)
 	{

@@ -89,6 +89,9 @@ Route::post('/postAcceptRequest', 'NotificationController@postAcceptRequest');
 //code done //verified
 Route::post('/postRejectRequest', 'NotificationController@postRejectRequest');
 
+//code done //verified
+Route::post('/postCancelRequest', 'NotificationController@postCancelRequest');
+
 Route::post('/postUpdateProfile', 'ProfileController@postUpdateProfile');
 
 
