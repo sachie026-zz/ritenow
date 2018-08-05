@@ -131,6 +131,9 @@ class StatusController extends Controller
 					$post->expires_at = $this->dateDiff(strtotime($post->expires_at) , $current_date, 2);
 					//$post->updated_at = $interval;
 					$post->interval = $interval*1000;
+
+					$check = strpos($post->interested,  '->'.$fbid.'->') !== false;
+					$post->isInterested = $check ? true : false;
 					array_push($usersStatus, $post);
 				}
 			  }
