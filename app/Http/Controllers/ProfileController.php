@@ -73,7 +73,7 @@ class ProfileController extends Controller
 
 			$userRecordsCount = Postrecord::where('fbid', $userid)->count();
 			$userProfileData[0]->history_count = $userRecordsCount;
-			$userProfileData[0]->user_connect_status = ($fbid == $userid)  ? -1 : RiteNowGlobal::getCheckIfConnected($fbid, $userid) ;
+			$userProfileData[0]->user_connect_status = ($fbid == $userid)  ? -1 : RiteNowGlobal::getCheckIfConnected($userid, $fbid) ;
 
 			if($userProfileData[0]->user_connect_status == 1)
 			{
@@ -85,8 +85,7 @@ class ProfileController extends Controller
 				$accept = Connectrequest::where('fbid', $fbid)->where('from', $userid)->get()[0];
 				$userProfileData[0]->request_id = $accept->id;
 			}
-			
-			
+		
 
 			return count($userProfileData) > 0 ? $userProfileData : null;
 		}
