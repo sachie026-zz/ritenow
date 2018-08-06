@@ -29,8 +29,8 @@ class RiteNowGlobal {
 			$ids = $connections->connections;
 						
 
-			$accept = Connectrequest::where('fbid', $toid)->where('from', $fromid)->count();
-			$requested = Connectrequest::where('fbid', $fromid)->where('from', $toid)->count();
+			$requested = Connectrequest::where('fbid', $toid)->where('from', $fromid)->count();
+			$accept = Connectrequest::where('fbid', $fromid)->where('from', $toid)->count();
 		
 			//$secondUserRequests = Connectrequest::where('fbid', $fromid)->get();
 
@@ -43,11 +43,11 @@ class RiteNowGlobal {
 			if($requested > 0)
 			{
 				//return "Requested";
-				return 1; //"Requested";
+				return 2; //"Requested";
 			}
 			
 			if($accept > 0){
-				return 2; // "Accept";
+				return 1; // "Accept";
 			}
 			else{
 				return 3; //"send Connect Request";
