@@ -77,12 +77,12 @@ class ProfileController extends Controller
 
 			if($userProfileData[0]->user_connect_status == 1)
 			{
-				$requested = Connectrequest::where('fbid', $userid)->where('from', $fbid)->get()[0];
+				$requested = Connectrequest::where('fbid', $fbid)->where('from', $userid)->get()[0];
 				$userProfileData[0]->request_id = $requested->id;
 			}
 			if($userProfileData[0]->user_connect_status == 2)
 			{
-				$accept = Connectrequest::where('fbid', $fbid)->where('from', $userid)->get()[0];
+				$accept = Connectrequest::where('fbid', $userid)->where('from', $fbid)->get()[0];
 				$userProfileData[0]->request_id = $accept->id;
 			}
 		
