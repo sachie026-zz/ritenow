@@ -59,6 +59,10 @@ Route::get('/getStatusViewers', 'StatusController@getStatusViewers');
 Route::get('/getRequests', 'ProfileController@getRequests');
 
 //code done //verified
+Route::get('/getFCMTokens', 'ProfileController@getFCMTokens');
+
+
+//code done //verified
 Route::post('/loginUser', 'UserController@checkAndAddNewUser');	
 
 //code done //verified

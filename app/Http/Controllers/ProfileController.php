@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Profile;
 use App\Connection;
+use App\User;
 use App\Postrecord;
 use App\Status;
 use App\Connectrequest;
@@ -226,6 +227,45 @@ class ProfileController extends Controller
 
 			$userRecords = Postrecord::where('fbid', $userid)->get();
 			return $userRecords;
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
+
+	public function getFCMTokens(Request $request)
+	{
+		try{
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+
+			// $userTokens = User::where('fbid', $fbid)->pluck('fcm_token');
+			// return $userTokens;
+
+
+
+
+			$userConnections = Connection::where('fbid', $fbid)->get();
+			$connectionsArray =  explode("->",$userConnections[0]->connections);
+			$count = count($connectionsArray);
+			//return $count;
+			if($count > 0){
+				$userTokens = User::whereIn('fbid', $connectionsArray)->pluck('fcm_token');
+				return $userTokens;			
+			}
+			else{
+				return null;
+			}
+
+
+
+
 		}
 		catch(Exception $ex){
 			return -1;
