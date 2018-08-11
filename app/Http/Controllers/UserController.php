@@ -275,6 +275,38 @@ class UserController extends Controller
 			return -1;
 		}				
 	}
+
+
+	public function postAddFCMToken(Request $request)
+	{
+		try{
+
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+			
+			$recordRow = user::where('fbid',$fbid)->get();
+			
+			if($recordRow->count() <= 0)
+				return 2;
+
+			$fcmtoken = isset($request->fcmtoken) ? $request->fcmtoken : null;
+
+			$record = User::find($recordRow[0]->id);	
+			$record->fcm_token = $fcmtoken;
+			$saved = $record->save();
+
+			return $saved ? 1 : 0;    
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
 /*
 	public function isValidToken($fbid, $userToken){
 		$userData = User::where('fbid', $fbid)->get();

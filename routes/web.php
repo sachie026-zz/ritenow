@@ -92,7 +92,11 @@ Route::post('/postRejectRequest', 'NotificationController@postRejectRequest');
 //code done //verified
 Route::post('/postCancelRequest', 'NotificationController@postCancelRequest');
 
+
 Route::post('/postUpdateProfile', 'ProfileController@postUpdateProfile');
+
+
+Route::post('/postAddFCM', 'UserController@postAddFCMToken');
 
 
 //Route::get('signUp', 'UserController@signupUser');
