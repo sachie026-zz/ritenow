@@ -59,6 +59,7 @@ class NotificationController extends Controller
 					$this->incrementRequestCountForId($userProfileData[0]->id);
 					// add requests count
 				}
+				RiteNowGlobal::sendNotificationToDevice("sachie", "exy1sUBh9xA:APA91bEuSHNJ1yvhCn8y2dJzU001dyXXguJzeqvdMvqILRXaUuTTArsu_04vXIx-BUB0vRxG6n8gby48umsQ_AC3W5XloM6rnB1H1U1hbE23iQArUhwsQu1jJhiHp7UjzYq7jSpd_d6l5ADA6q4n1YeKMpLw9eKGFw", "heyy tester");
 		        return $saved ? 1 : 0;    			
 			}
 			return 2;
