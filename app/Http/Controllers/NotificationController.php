@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Profile;
 use App\Connectrequest;
+use App\User;
 use App\Connection;
 use App\Notification;
 
