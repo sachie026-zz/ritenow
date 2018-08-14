@@ -182,7 +182,11 @@ class StatusController extends Controller
 					}
 				}
 
+
 				$postRow->save();		
+
+				$userFcm = User::where('fbid', $postRow->fbid)->get();
+				RiteNowGlobal::sendNotificationToDevice($userFcm[0]->fcm_token , "Your status got new interest");
 				//return 1;
 				//addnotification()		
 			}
@@ -270,6 +274,9 @@ class StatusController extends Controller
 				}
 
 				$postRow->save();		
+				$userFcm = User::where('fbid', $postRow->fbid)->get();
+				RiteNowGlobal::sendNotificationToDevice($userFcm[0]->fcm_token , "Your status got new viewer");
+
 				//return 1;
 				//addnotification()		
 			}
@@ -386,7 +393,8 @@ class StatusController extends Controller
 	public function postAddStatus(Request $request){
 		try{
 			
-    		$fbid = isset($request->fbid) ? $request->fbid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$userData = null;
 			if(!$fbid)
 				return 3;
 
@@ -450,6 +458,21 @@ class StatusController extends Controller
 			$userProfile = Profile::find($userProfileData[0]->id);
 			$userProfile->current_status_text = $statusText;
 			$userProfile->save();
+
+
+			$userConnections = Connection::where('fbid', $fbid)->get();
+			$connectionsArray =  explode("->",$userConnections[0]->connections);
+			$count = count($connectionsArray);
+			$userTokens = [];
+			//return $count;
+			if($count > 0){
+				$userTokens = User::whereIn('fbid', $connectionsArray)->pluck('fcm_token');
+				//return $userTokens;			
+			}
+
+
+			RiteNowGlobal::sendNotificationToDevice($userTokens, "Someone added new status");
+
 			return $saved ? 1 : 0;    			
     	}
     	catch(Exception $ex){

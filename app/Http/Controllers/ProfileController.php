@@ -245,12 +245,6 @@ class ProfileController extends Controller
 			if(!RiteNowGlobal::isValidToken($fbid, $token))
 				return 401;	// unauthorized or invalid token
 
-			// $userTokens = User::where('fbid', $fbid)->pluck('fcm_token');
-			// return $userTokens;
-
-
-
-
 			$userConnections = Connection::where('fbid', $fbid)->get();
 			$connectionsArray =  explode("->",$userConnections[0]->connections);
 			$count = count($connectionsArray);
@@ -262,9 +256,6 @@ class ProfileController extends Controller
 			else{
 				return null;
 			}
-
-
-
 
 		}
 		catch(Exception $ex){

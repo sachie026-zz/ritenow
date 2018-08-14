@@ -59,7 +59,11 @@ class NotificationController extends Controller
 					$this->incrementRequestCountForId($userProfileData[0]->id);
 					// add requests count
 				}
-				RiteNowGlobal::sendNotificationToDevice("sachie", "exy1sUBh9xA:APA91bEuSHNJ1yvhCn8y2dJzU001dyXXguJzeqvdMvqILRXaUuTTArsu_04vXIx-BUB0vRxG6n8gby48umsQ_AC3W5XloM6rnB1H1U1hbE23iQArUhwsQu1jJhiHp7UjzYq7jSpd_d6l5ADA6q4n1YeKMpLw9eKGFw", "heyy tester");
+				// RiteNowGlobal::sendNotificationToDevice("exy1sUBh9xA:APA91bEuSHNJ1yvhCn8y2dJzU001dyXXguJzeqvdMvqILRXaUuTTArsu_04vXIx-BUB0vRxG6n8gby48umsQ_AC3W5XloM6rnB1H1U1hbE23iQArUhwsQu1jJhiHp7UjzYq7jSpd_d6l5ADA6q4n1YeKMpLw9eKGFw", "heyy tester");	
+				
+				$userFcm = User::where('fbid', $fbid)->get();
+
+				RiteNowGlobal::sendNotificationToDevice($userFcm[0]->fcm_token , "New connect request");
 		        return $saved ? 1 : 0;    			
 			}
 			return 2;
@@ -291,6 +295,9 @@ class NotificationController extends Controller
 				$this->addNotification($row->fbid, $row->from, 2 , $row->profile_pic, $row->profile_name);
 				// increment connections count
 				$row->delete();		
+
+				$userFcm = User::where('fbid', $row->fbid)->get();
+				RiteNowGlobal::sendNotificationToDevice($userFcm[0]->fcm_token , "View your new connection");
 			}
 			else
 				return 2;
