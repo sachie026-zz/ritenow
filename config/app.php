@@ -163,7 +163,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-       //LaravelFCM\FCMServiceProvider::class,
+       LaravelFCM\FCMServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -226,7 +226,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        //'FCM'      => LaravelFCM\Facades\FCM::class,
+        'FCM'      => LaravelFCM\Facades\FCM::class,
     	//'FCMGroup' => LaravelFCM\Facades\FCMGroup::class,
     ],
 
