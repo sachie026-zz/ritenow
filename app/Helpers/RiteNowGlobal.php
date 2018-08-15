@@ -75,6 +75,8 @@ class RiteNowGlobal {
 		$dataBuilder = new PayloadDataBuilder();
 		$dataBuilder->addData(['a_data' => ""]);
 
+		$dataBuilder->addData(['content-available' => "1"]);
+
 		$option = $optionBuilder->build();
 		$notification = $notificationBuilder->build();
 		$data = $dataBuilder->build();
