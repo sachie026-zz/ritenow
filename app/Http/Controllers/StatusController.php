@@ -471,7 +471,7 @@ class StatusController extends Controller
 			}
 
 
-			RiteNowGlobal::sendNotificationToDevice($userTokens, "Someone added new status");
+			RiteNowGlobal::sendNotificationToDevice($userTokens->toArray(), "Someone added new status");
 
 			return $saved ? 1 : 0;    			
     	}
