@@ -134,6 +134,7 @@ class StatusController extends Controller
 
 					$check = strpos($post->interested,  '->'.$fbid.'->') !== false;
 					$post->isInterested = $check ? true : false;
+					$post->mobile = Profile::where('fbid', $fbid)->pluck("mobile")[0];
 					array_push($usersStatus, $post);
 				}
 			  }
