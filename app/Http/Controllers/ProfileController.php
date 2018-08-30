@@ -66,6 +66,7 @@ class ProfileController extends Controller
 				$userProfileData[0]->expires_at =  $interval <= 0 ? "Expired" : strtotime($userProfileData[0]->expires_at);
 				$userProfileData[0]->created_at = $current_date;
 				$userProfileData[0]->updated_at = $interval*1000;
+				$userProfileData[0]->mobile = Profile::where("fbid", $userid)->pluck('mobile')[0];
 			}
 			else{
 				$userProfileData = Profile::where("fbid", $userid)->get(); 
