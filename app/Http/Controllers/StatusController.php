@@ -520,6 +520,7 @@ class StatusController extends Controller
 				$chat->fbid = $postRow->fbid;
 				$chat->postid = $postId;
 				$chat->fromname = $fromUserData->name;
+				$chat->frompic = $fromUserData->pic;
 				$chat->fromid = $fromid;
 				$chat->message = $msg;
 				$chat->type = ($postRow->fbid == $fbid) ? 'send' : 'recieve';
