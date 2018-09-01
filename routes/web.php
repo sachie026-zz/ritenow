@@ -61,6 +61,12 @@ Route::get('/getRequests', 'ProfileController@getRequests');
 //code done //verified
 Route::get('/getFCMTokens', 'ProfileController@getFCMTokens');
 
+//code done //verified
+Route::get('/getChats', 'StatusController@getChats');
+
+//code done //verified
+Route::get('/getChatList', 'StatusController@getChatList');
+
 
 //code done //verified
 Route::post('/loginUser', 'UserController@checkAndAddNewUser');	
@@ -77,6 +83,9 @@ Route::post('/postDisConnect', 'NotificationController@postDisConnect');
 
 //code done //verified
 Route::post('/postAddStatus', 'StatusController@postAddStatus');
+
+//
+Route::post('/postStatusChat', 'StatusController@postAddStatusChatMessage');
 
 //code remaining 
 Route::post('/postShowInterest', 'StatusController@postShowInterest');

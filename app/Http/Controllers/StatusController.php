@@ -8,9 +8,10 @@ use App\Postrecord;
 use App\Connection;
 use App\User;
 use App\Profile;
+use App\Chat;
 
 use App\Helpers\RiteNowGlobal;
-
+use DB;
 
 class StatusController extends Controller
 {
@@ -481,7 +482,119 @@ class StatusController extends Controller
     	}
 	}
 
+
+	public function postAddStatusChatMessage(Request $request){
+		// keep only 4 messages
+		// delete status message on delete of status	
+		//request params : status id, from id , message 
+		//new params : message time , type [sent / recieve]
+		try{
+			$postId = isset($request->postid) ? $request->postid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			
+			if($fbid == null || $postId == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+			
+			$msg = isset($request->token) ? $request->message : null;
+			$fromid = isset($request->fromid) ? $request->fromid : null;
+			$postRow = Status::find($postId);
+
+			if($postRow != null)	
+				$present = count($postRow) > 0 ? true : false;	
+			else 
+				$present = false;
+
+			$fromUserData = Profile::where('fbid', $fbid)->get()[0]; 
+						
+			if($present){
+				
+				$chat = new Chat;
+		
+				$chat->fbid = $postRow->fbid;
+				$chat->postid = $postId;
+				$chat->fromname = $fromUserData->name;
+				$chat->fromid = $fromid;
+				$chat->message = $msg;
+				$chat->type = ($postRow->fbid == $fbid) ? 'send' : 'recieve';
+				$saved = $chat->save();
+			}
+			else
+				return 2;
+			
+			return 1;
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
+
 	
+	public function getChatList(Request $request){
+		try{
+			$postId = isset($request->postid) ? $request->postid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+
+			//return $postId;	
+			
+			$postRow = Status::find($postId);
+			//return $postRow;
+
+			if(count($postRow) == 0)
+				return 2;
+
+			$statusChatList = DB::table('chats')->groupBy('fromid')->where('postid', $postId)->get();	
+
+			return $statusChatList; 
+
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
+
+	public function getChats(Request $request){
+		try{
+			$postId = isset($request->postid) ? $request->postid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+
+			//return $postId;	
+			$fromid = isset($request->fromid) ? $request->fromid : null;
+			
+			$postRow = Status::find($postId);
+			//return $postRow;
+
+			if(count($postRow) == 0)
+				return 2;
+
+			$statusChats = Chat::where('fromid', $fromid)->where('postid', $postId)->get();	
+			return $statusChats; 
+
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+
+	}
+
 	public function getAllStatusForUser(){
 		try{
 			$user_id = "8";
