@@ -382,6 +382,8 @@ class StatusController extends Controller
 
 				$statusRow->delete();
 
+				Chat::where('postid', $row[0]->id)->delete();
+
 				return 1;
 			}
 			return 2;
