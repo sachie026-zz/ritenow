@@ -557,7 +557,7 @@ class StatusController extends Controller
 			if(count($postRow) == 0)
 				return 2;
 
-			$statusChatList = DB::table('chats')->groupBy('fromid')->where('postid', $postId)->get();	
+			$statusChatList = DB::table('chats')->groupBy('fromid')->where('postid', $postId)->where('type', 'recieve')->get();	
 
 			return $statusChatList; 
 
