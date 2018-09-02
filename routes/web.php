@@ -84,6 +84,10 @@ Route::post('/postDisConnect', 'NotificationController@postDisConnect');
 //code done //verified
 Route::post('/postAddStatus', 'StatusController@postAddStatus');
 
+//code done //verified
+Route::post('/postAddPublicStatus', 'StatusController@postAddPublicStatus');
+
+
 //
 Route::post('/postStatusChat', 'StatusController@postAddStatusChatMessage');
 

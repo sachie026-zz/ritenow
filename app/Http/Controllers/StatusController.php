@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Status;
+use App\Publicpost;
 use App\Postrecord;
 use App\Connection;
 use App\User;
@@ -392,7 +393,66 @@ class StatusController extends Controller
 			return -1;
 		}
 	}
+
+	public function postAddPublicStatus(Request $request){
+		try{
+			
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$userData = null;
+			if(!$fbid)
+				return 3;
+
+			$token = isset($request->token) ? $request->token : null;
+			if($token)
+			{
+				$userData = User::where('fbid', $fbid)->get();
+				if($token != $userData[0]->remember_token)
+					return 4;	//authentication problem 'token dosent match'		
+			}
+			else
+				return 5;
+			
+				
+			$latitude = isset($request->latitude) ? $request->latitude : null;
+			$longitude = isset($request->longitude) ? $request->longitude : null;
+			$address = isset($request->address) ? $request->address : null;
+			$state = isset($request->state) ? $request->state : null;
+			$mobile = isset($request->mobile) ? $request->mobile : null;
+			$mood = isset($request->mood) ? $request->mood : null;
+			$statusText = isset($request->status) ? $request->status : null;
+
+			$duration = isset($request->duration) ? $request->duration : null;
+			$durationUnit = isset($request->durationUnit) ? $request->durationUnit : null;
+
+			$expiry = date("Y-m-d H:i:s", strtotime("+".$duration." ".$durationUnit));
+			
+			$userProfileData = Profile::where('fbid', $fbid)->get();	
+			
+			$pName = $userProfileData[0]->name;
+			$pPic = $userProfileData[0]->pic;
+
+			$status = new Publicpost;
 	
+			$status->fbid = $fbid;
+			$status->status = $statusText;
+			$status->state = $state;
+			$status->mobile = $mobile;
+			$status->mood = $mood;
+			$status->lattitude = $latitude;
+			$status->longitude = $longitude;
+			$status->address = $address;
+			$status->expires_at = $expiry;
+			$status->profile_name = $pName;
+			$status->profile_pic = $pPic;
+			
+			$saved = $status->save();
+			return $saved ? 1 : 0;    			
+    	}
+    	catch(Exception $ex){
+    		return $ex;
+    	}
+	}
+
 	
 	public function postAddStatus(Request $request){
 		try{
