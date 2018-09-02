@@ -8,6 +8,7 @@ use App\Connection;
 use App\User;
 use App\Postrecord;
 use App\Status;
+use App\Publicpost;
 use App\Connectrequest;
 use DB;
 use App\Helpers\RiteNowGlobal;
@@ -208,6 +209,25 @@ class ProfileController extends Controller
 			else{
 				return null;
 			}
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
+
+	public function getPublicPosts(Request $request){
+		try{
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null )
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+
+			$publicposts = Publicpost::get();
+			return $publicposts;
 		}
 		catch(Exception $ex){
 			return -1;

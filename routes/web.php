@@ -42,6 +42,10 @@ Route::get('/checkIfConnected', 'ProfileController@getCheckIfConnected');
 Route::get('/getPostRecords', 'ProfileController@getPostHistory');
 
 //code done // verified
+Route::get('/getPublicPosts', 'ProfileController@getPublicPosts');
+
+
+//code done // verified
 Route::get('/getNotifications', 'NotificationController@getAllNotifications');
 
 Route::get('/getSettings', 'ProfileController@getSettings');
