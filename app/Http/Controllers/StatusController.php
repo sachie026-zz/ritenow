@@ -588,7 +588,7 @@ class StatusController extends Controller
 
 
 				$userFcm = User::where('fbid', ($postRow->fbid == $fbid) ? $fromid : $fbid)->get();
-				RiteNowGlobal::sendNotificationToDevice($userFcm[0]->fcm_token , "New message - ".$fromUserData->name);
+				RiteNowGlobal::sendNotificationToDevice($userFcm[0]->fcm_token , "New message from ".$fromUserData->name);
 			}
 			else
 				return 2;
