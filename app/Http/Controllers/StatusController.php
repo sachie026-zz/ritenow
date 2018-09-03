@@ -585,6 +585,10 @@ class StatusController extends Controller
 				$chat->message = $msg;
 				$chat->type = ($postRow->fbid == $fbid) ? 'send' : 'recieve';
 				$saved = $chat->save();
+
+
+				$userFcm = User::where('fbid', ($postRow->fbid == $fbid) ? $fromid : $fbid)->get();
+				RiteNowGlobal::sendNotificationToDevice($userFcm[0]->fcm_token , "New message - ".$fromUserData->name);
 			}
 			else
 				return 2;
