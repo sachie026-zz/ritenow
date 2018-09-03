@@ -652,7 +652,7 @@ class StatusController extends Controller
 			if(count($postRow) == 0)
 				return 2;
 
-			$statusChats = Chat::where('fromid', $fromid)->where('postid', $postId)->orderBy('desc')->get();	
+			$statusChats = Chat::where('fromid', $fromid)->where('postid', $postId)->orderBy('created_at','desc')->get();	
 			return $statusChats; 
 
 		}
