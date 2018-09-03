@@ -226,7 +226,15 @@ class ProfileController extends Controller
 			if(!RiteNowGlobal::isValidToken($fbid, $token))
 				return 401;	// unauthorized or invalid token
 
-			$publicposts = Publicpost::orderBy('created_at', 'desc')->get();
+			$city = isset($request->city) ? $request->city : null;
+
+			$publicposts = null;
+			if($city != null){
+				$publicposts = Publicpost::where('address', 'LIKE', '%'.$city.'%')->orderBy('created_at', 'desc')->get();
+			}
+			else{
+				$publicposts = Publicpost::orderBy('created_at', 'desc')->get();
+			}
 			return $publicposts;
 		}
 		catch(Exception $ex){
