@@ -241,6 +241,79 @@ class StatusController extends Controller
 		}
 	}
 
+
+	public function postAddPublicStatusAction(Request $request){
+		try{
+			$postId = isset($request->postid) ? $request->postid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null || $postId == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+
+			$actionId = isset($request->actionid) ? $request->actionid : null;					
+			$postRow = Publicpost::find($postId);
+
+			if($postRow != null)	
+				$present = count($postRow) > 0 ? true : false;	
+			else 
+				$present = false;
+			
+			if($present){
+				if($actionId == 1){
+					if($postRow->agreed == null){
+						$postRow->agreed = '->'.$fbid.'->';
+					}
+					else{
+						if( strpos($postRow->agreed,  '->'.$fbid.'->') !== false &&  strpos($postRow->agreed,  '->'.$fbid.'->') >= 0)
+						{
+							return 3;
+						}
+						else{
+							$postRow->agreed  = $postRow->agreed .$fbid.'->'; 
+						}
+					}	
+				}
+				else{
+					if($postRow->disagree == null){
+						$postRow->disagree = '->'.$fbid.'->';
+					}
+					else{
+						if(substr_count($postRow->disagree, "->") > 5){
+							$postRow->delete();
+							return 1;
+						}
+						else{
+							if( strpos($postRow->disagree,  '->'.$fbid.'->') !== false &&  strpos($postRow->disagree,  '->'.$fbid.'->') >= 0)
+							{
+								return 3;
+							}
+							else{
+								$postRow->disagree  = $postRow->disagree .$fbid.'->'; 
+							}
+	
+						}
+					}
+	
+				}
+				$postRow->save();					
+				return 1;
+			}
+			else
+				return 2;
+			
+			return 1;
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
+
+
+
 	public function postAddViewCount(Request $request){
 		try{
 			$postId = isset($request->postid) ? $request->postid : null;

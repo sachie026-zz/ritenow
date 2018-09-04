@@ -101,6 +101,9 @@ Route::post('/postShowInterest', 'StatusController@postShowInterest');
 //code remaining 
 Route::post('/postAddViewCount', 'StatusController@postAddViewCount');
 
+//code remaining 
+Route::post('/postAddPublicStatusAction', 'StatusController@postAddPublicStatusAction');
+
 //code done //verified
 Route::post('/postRemoveStatus', 'StatusController@postRemoveStatus');
 
