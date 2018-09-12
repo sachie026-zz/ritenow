@@ -217,6 +217,7 @@ class ProfileController extends Controller
 
 	public function getPublicPosts(Request $request){
 		try{
+			$yesterday =  date("Y-m-d H:i:s", strtotime( '-1 days' ) ); 
 			$fbid = isset($request->fbid) ? $request->fbid : null;
 			$token = isset($request->token) ? $request->token : null;
 			
@@ -230,10 +231,10 @@ class ProfileController extends Controller
 
 			$publicposts = null;
 			if($city != null){
-				$publicposts = Publicpost::where('address', 'LIKE', '%'.$city.'%')->orderBy('created_at', 'desc')->get();
+				$publicposts = Publicpost::where('address', 'LIKE', '%'.$city.'%')->where('created_at', '>',$yesterday)->orderBy('created_at', 'desc')->get();
 			}
 			else{
-				$publicposts = Publicpost::orderBy('created_at', 'desc')->get();
+				$publicposts = Publicpost::orderBy('created_at', 'desc')->where('created_at', '>',$yesterday)->get();
 			}
 			return $publicposts;
 		}
