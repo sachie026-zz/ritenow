@@ -217,7 +217,7 @@ class ProfileController extends Controller
 
 	public function getPublicPosts(Request $request){
 		try{
-			$yesterday =  date("Y-m-d H:i:s", strtotime( '-1 days' ) ); 
+			$yesterday =  date("Y-m-d H:i:s", strtotime( '-2 days' ) ); 
 			$fbid = isset($request->fbid) ? $request->fbid : null;
 			$token = isset($request->token) ? $request->token : null;
 			
