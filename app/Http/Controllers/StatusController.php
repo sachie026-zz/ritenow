@@ -598,14 +598,16 @@ class StatusController extends Controller
 
 
 			$userConnections = Connection::where('fbid', $fbid)->get();
-			$connectionsArray =  explode("->",$userConnections[0]->connections);
-			$count = count($connectionsArray);
-			$userTokens = [];
-			//return $count;
-			if($count > 0){
-				$userTokens = User::whereIn('fbid', $connectionsArray)->pluck('fcm_token');
-				RiteNowGlobal::sendNotificationToDevice($userTokens->toArray(), "Someone added new status");
-				//return $userTokens;			
+			if($userConnections !== null || $userConnections !== ""){
+				$connectionsArray =  explode("->",$userConnections[0]->connections);
+				$count = count($connectionsArray);
+				$userTokens = [];
+				//return $count;
+				if($count > 0){
+					$userTokens = User::whereIn('fbid', $connectionsArray)->pluck('fcm_token');
+					RiteNowGlobal::sendNotificationToDevice($userTokens->toArray(), "Someone added new status");
+					//return $userTokens;			
+				}	
 			}
 
 
