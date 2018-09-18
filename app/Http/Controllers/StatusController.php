@@ -604,11 +604,12 @@ class StatusController extends Controller
 			//return $count;
 			if($count > 0){
 				$userTokens = User::whereIn('fbid', $connectionsArray)->pluck('fcm_token');
+				RiteNowGlobal::sendNotificationToDevice($userTokens->toArray(), "Someone added new status");
 				//return $userTokens;			
 			}
 
 
-			RiteNowGlobal::sendNotificationToDevice($userTokens->toArray(), "Someone added new status");
+
 
 			return $saved ? 1 : 0;    			
     	}
