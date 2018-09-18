@@ -598,7 +598,7 @@ class StatusController extends Controller
 
 
 			$userConnections = Connection::where('fbid', $fbid)->get();
-			if($userConnections != NULL || $userConnections != ""){
+			if($userConnections && strpos($userConnections,  '->') !== false){
 				$connectionsArray =  explode("->",$userConnections[0]->connections);
 				$count = count($connectionsArray);
 				$userTokens = [];
