@@ -255,7 +255,7 @@ class ProfileController extends Controller
 			if(!RiteNowGlobal::isValidToken($fbid, $token))
 				return 401;	// unauthorized or invalid token
 
-			$userRecords = Postrecord::where('fbid', $userid)->get();
+			$userRecords = Postrecord::where('fbid', $userid)->orderBy('created_at', 'desc')->get();
 			return $userRecords;
 		}
 		catch(Exception $ex){
