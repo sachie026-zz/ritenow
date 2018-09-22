@@ -676,6 +676,35 @@ class StatusController extends Controller
 		}
 	}
 
+	public function getChatListForUser(Request $request){
+		try{
+			$postId = isset($request->postid) ? $request->postid : null;
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+
+			//return $postId;	
+			
+			$postRow = Status::find($postId);
+			//return $postRow;
+
+			if(count($postRow) == 0)
+				return 2;
+
+			$statusChatList = DB::table('chats')->groupBy('postid')->where('fromid', $fbid)->where('type', 'send')->get();	
+
+			return $statusChatList; 
+
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
 	
 	public function getChatList(Request $request){
 		try{

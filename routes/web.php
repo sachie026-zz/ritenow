@@ -71,6 +71,9 @@ Route::get('/getChats', 'StatusController@getChats');
 //code done //verified
 Route::get('/getChatList', 'StatusController@getChatList');
 
+//code done //verified
+Route::get('/getProfileChatList', 'StatusController@getChatListForUser');
+
 
 //code done //verified
 Route::post('/loginUser', 'UserController@checkAndAddNewUser');	
