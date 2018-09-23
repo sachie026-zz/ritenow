@@ -696,9 +696,9 @@ class StatusController extends Controller
 			// if(count($postRow) == 0)
 			// 	return 2;
 
-			$statusChatList = DB::table('chats')->groupBy('postid')
-			->where('fromid', $fbid)
-			->where('fbid', '!=', $fbid)
+			$statusChatList = DB::table('chats')->groupBy('chats.postid')
+			->where('chats.fromid', $fbid)
+			->where('chats.fbid', '!=', $fbid)
 			->join("profiles", 'chats.fbid', '=','profiles.fbid')
 			->get();	
 
