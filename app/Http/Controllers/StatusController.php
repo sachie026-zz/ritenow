@@ -678,7 +678,7 @@ class StatusController extends Controller
 
 	public function getChatListForUser(Request $request){
 		try{
-			$postId = isset($request->postid) ? $request->postid : null;
+			// $postId = isset($request->postid) ? $request->postid : null;
 			$fbid = isset($request->fbid) ? $request->fbid : null;
 			$token = isset($request->token) ? $request->token : null;
 			
@@ -690,11 +690,11 @@ class StatusController extends Controller
 
 			//return $postId;	
 			
-			$postRow = Status::find($postId);
+			// $postRow = Status::find($postId);
 			//return $postRow;
 
-			if(count($postRow) == 0)
-				return 2;
+			// if(count($postRow) == 0)
+			// 	return 2;
 
 			$statusChatList = DB::table('chats')->groupBy('postid')->where('fromid', $fbid)->where('type', 'send')->get();	
 
