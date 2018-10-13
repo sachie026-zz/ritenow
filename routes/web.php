@@ -122,6 +122,7 @@ Route::post('/postCancelRequest', 'NotificationController@postCancelRequest');
 
 Route::post('/postUpdateProfile', 'ProfileController@postUpdateProfile');
 
+Route::post('/postUpdateProfilePic', 'ProfileController@postUpdateProfilePic');
 
 Route::post('/postAddFCM', 'UserController@postAddFCMToken');
 

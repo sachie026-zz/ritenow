@@ -347,6 +347,37 @@ class ProfileController extends Controller
 		catch(Exception $ex){
 		}
 	}
+
+	public function postUpdateProfilePic(Request $request)
+	{
+		try{
+
+			$fbid = isset($request->fbid) ? $request->fbid : null;
+			$token = isset($request->token) ? $request->token : null;
+			
+			if($fbid == null)
+				return 5;
+			
+			if(!RiteNowGlobal::isValidToken($fbid, $token))
+				return 401;	// unauthorized or invalid token
+			
+			//$status = null;
+			$recordRow = Profile::where('fbid',$fbid)->get();
+			
+			if($recordRow->count() <= 0)
+				return 2;
+
+			$pic = isset($request->pic) ? $request->pic : null;
+
+			$record = Profile::find($recordRow[0]->id);	
+			$record->pic = $pic;
+			$saved = $record->save();
+			return $saved ? 1 : 0;    
+		}
+		catch(Exception $ex){
+			return -1;
+		}
+	}
 	
 	public function createSetting()
 	{
